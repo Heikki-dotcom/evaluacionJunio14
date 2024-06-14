@@ -102,7 +102,7 @@ function calcularPromedio($articulos) {
 
     $largo = count($articulos);
 
-    return $total / $largo;
+    return "El promedio es: $" . ($total / $largo);
 
 }
 

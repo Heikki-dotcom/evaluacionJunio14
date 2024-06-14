@@ -51,7 +51,7 @@ function actualizar(&$articulos, $modelo, $nombre, $valor) {
 function valorTotal($articulos) {
     $total = 0;
     foreach($articulos as $articulo) {
-        $total .= intval($articulo['valor']);
+        $total += intval($articulo['valor']);
     }
 
     return $total;
@@ -76,12 +76,32 @@ function filtrarValor($articulos, $valor) {
     
 }
 
-function listarModelos() {
+function listarModelos($articulos) {
+
+    $result = '';
     
+    foreach ($articulos as $articulo) {
+        $artModelo = $articulo['modelo'];
+        $result .= "Modelos Registrados: " . $artModelo .  "<br>";
+        
+   
+    }
+
+    return $result;
+
 }
 
-function calcularPromedio() {
+function calcularPromedio($articulos) {
     
+    $total = 0;
+    foreach($articulos as $articulo) {
+        $total += intval($articulo['valor']);
+    }
+
+    $largo = count($articulos);
+
+    return "El promedio es: $" . ($total / $largo);
+
 }
 
 $articulos = [
@@ -93,7 +113,42 @@ $articulos = [
     ]
 ];
 
-$articulos =  agregar('tele',1,400,$articulos,2);
-echo buscar($articulos,2);
-echo mostrar($articulos);
-echo filtrarValor($articulos, 300);
+$nombre = "articulo 1";
+$cantidad = 1;
+$valor = 100;
+$modelo = "Modelo 1";
+
+$articulos = agregar($articulos, $nombre, $cantidad, $valor, $modelo);
+$resultado = "Articulo agregado correctamente.<br>";
+
+echo $resultado;
+
+$resultado = buscar($articulos, $modelo);
+
+echo $resultado;
+
+$resultado = mostrar($articulos);
+
+echo $resultado;
+
+$articulos = actualizar($articulos, $modelo, $nombre, $valor);
+$resultado = "Articulo actualizado correctamente.<br>";
+
+echo $resultado;
+
+$resultado = valorTotal($articulos);
+
+echo $resultado;
+
+$resultado = filtrarValor($articulos, $valor);
+
+echo $resultado;
+
+$resultado = listarModelos($articulos);
+
+echo $resultado;
+
+$resultado = calcularPromedio($articulos);
+
+echo $resultado;
+
