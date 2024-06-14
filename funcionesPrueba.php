@@ -1,31 +1,48 @@
 <?php
 
-function agregar($nombre, $cantidad, $valor, $articulo, $modelo) {
-    $articulo[] = [
+session_start();
+
+function agregar($nombre, $cantidad, $valor, $articulos, $modelo) {
+    $articulos = [
         'nombre' => $nombre,
         'cantidad' => $cantidad,
         'valor' => $valor,
         'modelo' => $modelo
     ];
-    return $articulo;
+    return $articulos;
 }
 
 function buscar($articulos, $modelo) {
+    foreach ($articulos as $articulo) {
+        if ($articulo['modelo'] == $modelo) {
+            return "Nombre: " . $articulo['nombre'] . "<br>";
+        }
+    }
+    return "articulo no encontrado.<br>";
+}
+
+function mostrar($articulos) {
     $result = '';
     foreach ($articulos as $articulo) {
-        $result .= "Nombre: " . $articulo['nombre'] . ", Valor: " . $articulo['valor'] . ", Modelo: " . $articulo['modelo'] . "<br>";
+        $artNombre = $articulo['nombre'];
+        $artValor = $articulo['valor'];
+        $artModelo = $articulo['modelo'];
+        $result .= "Nombre: " . $artNombre . ", Valor: " . $artValor . ", Modelo: " . $artModelo . "<br>";
         
    
     }
     return $result;
 }
 
-function mostrar($articulos) {
-    
-}
-
-function actualizar($articulos,$email,$nombre,$valor,$modelo) {
-    
+function actualizar($articulos,$modelo,$nombre,$valor) {
+    foreach ($articulos as $articulo) {
+        if ($articulo['modelo'] == $modelo) {
+            $articulo['nombre'] = $nombre;
+            $articulo['valor'] = $valor;
+            break;
+        }
+    }
+    return $articulos;
 }
 
 function valorTotal() {
@@ -90,3 +107,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['articulos'] = $articulos;
     $_SESSION['resultado'] = $resultado;
 }
+
+header("Location: form.php");
+exit();
