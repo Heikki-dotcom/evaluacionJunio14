@@ -78,6 +78,34 @@ function filtrarValor($articulos, $valor) {
     
 }
 
+function listarModelos($articulos) {
+
+    $result = '';
+    
+    foreach ($articulos as $articulo) {
+        $artModelo = $articulo['modelo'];
+        $result .= "Modelos Registrados: " . $artModelo .  "<br>";
+        
+   
+    }
+
+    return $result;
+
+}
+
+function calcularPromedio($articulos) {
+    
+    $total = 0;
+    foreach($articulos as $articulo) {
+        $total += intval($articulo['valor']);
+    }
+
+    $largo = count($articulos);
+
+    return $total / $largo;
+
+}
+
 if (!isset($_SESSION['articulos'])) {
     $_SESSION['articulos'] = [];
 }
@@ -120,11 +148,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             break;
 
         case 'listarModelos':
-            $resultado = listarModelos();
+            $resultado = listarModelos($articulos); 
             break;
 
         case 'calcularPromedio':
-            $resultado = calcularPromedio($resultados);
+            $resultado = calcularPromedio($articulos);
             break;
 
         case 'limpiar':
