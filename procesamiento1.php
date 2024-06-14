@@ -48,6 +48,36 @@ function actualizar(&$articulos, $modelo, $nombre, $valor) {
     return $articulos;
 }
 
+function valorTotal($articulos) {
+    $total = 0;
+    foreach($articulos as $articulo) {
+        $total += intval($articulo['valor']);
+    }
+
+    return "El valor total es: $". $total;
+
+}
+
+function filtrarValor($articulos, $valor) {
+ 
+    $result = '';
+
+    foreach ($articulos as $articulo) {
+        
+        if($valor < $articulo['valor']){
+            $artNombre = $articulo['nombre'];
+            $artValor = $articulo['valor'];
+            $artModelo = $articulo['modelo'];
+            $artCantidad = $articulo['cantidad'];
+            $result .= "Nombre: " . $artNombre . ", Valor: " . $artValor . ", Modelo: " . $artModelo . ", Cantidad " . $artCantidad .  "<br>";
+        }
+
+    }
+
+    return $result;
+    
+}
+
 if (!isset($_SESSION['articulos'])) {
     $_SESSION['articulos'] = [];
 }
@@ -79,6 +109,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         case 'actualizar':
             $articulos = actualizar($articulos, $modelo, $nombre, $valor);
             $resultado = "Articulo actualizado correctamente.<br>";
+            break;
+
+        case 'calcularTotal':
+            $resultado = valorTotal($articulos);
+            break;
+
+        case 'filtrarValor':
+            $resultado = filtrarValor($articulos,$valor);
+            break;
+
+        case 'listarModelos':
+            $resultado = listarModelos();
+            break;
+
+        case 'calcularPromedio':
+            $resultado = calcularPromedio($resultados);
             break;
 
         case 'limpiar':

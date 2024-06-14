@@ -1,12 +1,15 @@
 <?php
 
-function agregar($nombre, $cantidad, $valor, $articulos, $modelo) {
-    $articulos[] = [
+
+function agregar($articulos, $nombre, $cantidad, $valor, $modelo) {
+    
+    $articulo = [
         'nombre' => $nombre,
         'cantidad' => $cantidad,
         'valor' => $valor,
         'modelo' => $modelo
     ];
+    $articulos[] = $articulo;
     echo "agregado con exito";
     return $articulos;
 }
@@ -26,16 +29,17 @@ function mostrar($articulos) {
         $artNombre = $articulo['nombre'];
         $artValor = $articulo['valor'];
         $artModelo = $articulo['modelo'];
-        $result .= "Nombre: " . $artNombre . ", Valor: " . $artValor . ", Modelo: " . $artModelo . "<br>";
+        $artCantidad = $articulo['cantidad'];
+        $result .= "Nombre: " . $artNombre . ", Valor: " . $artValor . ", Modelo: " . $artModelo . ", Cantidad " . $artCantidad .  "<br>";
         
    
     }
     return $result;
 }
 
-function actualizar($articulos,$modelo, $nombre, $valor) {
-    foreach ($articulos as $articulo) {
-        if ($articulo['modelo'] == $modelo) {
+function actualizar(&$articulos, $modelo, $nombre, $valor) {
+    foreach ($articulos as &$articulo) {
+        if (isset($articulo['modelo']) && $articulo['modelo'] == $modelo) {
             $articulo['nombre'] = $nombre;
             $articulo['valor'] = $valor;
             break;
@@ -44,11 +48,31 @@ function actualizar($articulos,$modelo, $nombre, $valor) {
     return $articulos;
 }
 
-function valorTotal() {
-    
+function valorTotal($articulos) {
+    $total = 0;
+    foreach($articulos as $articulo) {
+        $total .= intval($articulo['valor']);
+    }
+
+    return $total;
+
 }
 
-function filtrarValor() {
+function filtrarValor($articulos, $valor) {
+ 
+    $result = '';
+
+    foreach ($articulos as $articulo) {
+        
+        if($valor < $articulo['valor']){
+            $artNombre = $articulo['nombre'];
+            $artValor = $articulo['valor'];
+            $artModelo = $articulo['modelo'];
+            $artCantidad = $articulo['cantidad'];
+            $result .= "Nombre: " . $artNombre . ", Valor: " . $artValor . ", Modelo: " . $artModelo . ", Cantidad " . $artCantidad .  "<br>";
+        }
+
+    }
     
 }
 
@@ -62,13 +86,14 @@ function calcularPromedio() {
 
 $articulos = [
     [
-    'nombre' => 'tele',
+    'nombre' => 'laptop',
     'cantidad' => 1,
     'valor' => 122,
     'modelo' => 'lg'
     ]
 ];
 
-$articulos =  agregar('tele',1,100,$articulos,2);
+$articulos =  agregar('tele',1,400,$articulos,2);
 echo buscar($articulos,2);
 echo mostrar($articulos);
+echo filtrarValor($articulos, 300);
